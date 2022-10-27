@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">weather-app</string>
+    <string name="app_title">Weather</string>
+    <string name="chip_current">Current</string>
+    <string name="chip_hourly">Hourly</string>
+    <string name="chip_daily">Daily</string>
+    <string name="temp_c">%1$d°C</string>
+    <string name="feels_like">Feels like %1$d°C</string>
+    <string name="wind_speed">%s km/h</string>
+    <string name="humidity">%d%%</string>
+    <string name="pressure">%dhPa</string>
+
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
