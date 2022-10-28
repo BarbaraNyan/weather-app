@@ -9,8 +9,10 @@ data class CurrentWeather(
     val wind: Double,
     val humidity: Int,
     val pressure: Int,
-    val sunrise: String,
-    val sunset: String
+    val sunrise: String? = "",
+    val sunset: String? = "",
+    val dt_txt: String? = "",
+    val icon: String? = ""
 //    val sunrise: ZonedDateTime,
 //    val sunset: ZonedDateTime
 )

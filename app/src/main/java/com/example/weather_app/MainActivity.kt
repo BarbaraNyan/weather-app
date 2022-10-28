@@ -32,19 +32,32 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setupActionBarWithNavController(findNavController(R.id.fragHolder))
+        var navController = findNavController(R.id.fragHolder)
+//        setupActionBarWithNavController(findNavController(R.id.fragHolder))
 
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
-                TODO("Not yet implemented")
+                if (tab != null) {
+                    when(tab.position){
+                        0 -> {
+                            navController.popBackStack()
+                            navController.navigate(R.id.currentWeatherFragment)
+                        }
+                        1 -> {
+                            navController.popBackStack()
+                            navController.navigate(R.id.dailyWeatherFragment)
+                        }
+                        2 ->{
+                            navController.popBackStack()
+                        }
+                    }
+                }
             }
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
-                TODO("Not yet implemented")
             }
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
-                TODO("Not yet implemented")
             }
 
         })

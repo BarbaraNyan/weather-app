@@ -5,7 +5,8 @@
     <string name="chip_hourly">Hourly</string>
     <string name="chip_daily">Daily</string>
     <string name="temp_c">%1$d°C</string>
-    <string name="feels_like">Feels like %1$d°C</string>
+    <string name="feels_like_temp_c">%1$d°C</string>
+    <!--    <string name="feels_like">Feels like %1$d°C</string>-->
     <string name="wind_speed">%s km/h</string>
     <string name="humidity">%d%%</string>
     <string name="pressure">%dhPa</string>

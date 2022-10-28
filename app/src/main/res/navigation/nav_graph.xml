@@ -7,6 +7,11 @@
     <fragment
         android:id="@+id/currentWeatherFragment"
         android:name="com.example.weather_app.fragments.CurrentWeatherFragment"
-        android:label="fragment_current_weather"
+        android:label="Current weather"
         tools:layout="@layout/fragment_current_weather" />
+    <fragment
+        android:id="@+id/dailyWeatherFragment"
+        android:name="com.example.weather_app.fragments.DailyWeatherFragment"
+        android:label="fragment_daily_weather"
+        tools:layout="@layout/fragment_daily_weather" />
 </navigation>
