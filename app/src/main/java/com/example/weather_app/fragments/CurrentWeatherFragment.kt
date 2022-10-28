@@ -1,25 +1,17 @@
 package com.example.weather_app.fragments
 
-import android.content.Context
-import android.content.Intent
-import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
+import android.location.Address
 import android.os.Bundle
-import android.text.util.Linkify
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
-import androidx.core.content.getSystemService
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
@@ -28,46 +20,37 @@ import com.example.weather_app.R
 import com.example.weather_app.adapter.HourlyWeatherAdapter
 import com.example.weather_app.databinding.FragmentCurrentWeatherBinding
 import com.example.weather_app.domain.model.CurrentWeather
+import com.example.weather_app.util.LocationTracker
 import com.example.weather_app.util.Settings
 import com.example.weather_app.util.URLs
 import com.example.weather_app.view_models.CurrentWeatherViewModel
-import com.google.android.gms.location.FusedLocationProviderClient
-import com.google.android.gms.location.LocationServices
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.jar.Manifest
-
-//private const val ARG_PARAM_LATITUDE = "latitude"
-//private const val ARG_PARAM_LONGITUDE = "longitude"
 
 @AndroidEntryPoint
-class CurrentWeatherFragment : Fragment() {
-//    private var param_lat: String? = null
-//    private var param_lon: String? = null
-
+class CurrentWeatherFragment : Fragment(){
     private lateinit var binding: FragmentCurrentWeatherBinding
     private val currentWeatherViewModel: CurrentWeatherViewModel by viewModels()
     private lateinit var defaultCity: String
     private lateinit var adapter: HourlyWeatherAdapter
     private val hourlyWeatherList = arrayListOf<CurrentWeather>()
 
+    private lateinit var locationTracker: LocationTracker
 
     private var repeat = 3
     private var repeat2 = 3
 
+    private var address: Address? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
-//        (activity as AppCompatActivity).supportActionBar?.title = "Saint-Petersburg"
-//        arguments?.let {
-//            param_lon = it.getString(ARG_PARAM_LONGITUDE)
-//            param_lat = it.getString(ARG_PARAM_LATITUDE)
-//        }
+        requestPermissionLocation()
+        locationTracker = LocationTracker(requireContext())
+        address = locationTracker.getLocation()
     }
 
     override fun onCreateView(
@@ -86,12 +69,20 @@ class CurrentWeatherFragment : Fragment() {
         binding.rvHourWeather.layoutManager = layoutManager
         binding.rvHourWeather.adapter = adapter
 
+//        currentWeatherViewModel.getCurrentWeatherByCoordinates(Settings.DEFAULT_LAT, Settings.DEFAULT_LON, URLs.APP_ID)
+//        Toast.makeText(requireContext(),address.latitude.toString() + " " + curLong.toString(), Toast.LENGTH_SHORT).show()
 
-//        requireActivity().actionBar?.title =  "Saint-Petersburg"
+        if (address == null){
+            currentWeatherViewModel.getCurrentWeatherByCoordinates(Settings.DEFAULT_LAT, Settings.DEFAULT_LON, URLs.APP_ID)
+            currentWeatherViewModel.getDailyWeatherByCoordinates(Settings.DEFAULT_LAT, Settings.DEFAULT_LON, URLs.APP_ID)
+        }
+        else{
+            currentWeatherViewModel.getCurrentWeatherByCoordinates(address!!.latitude, address!!.longitude, URLs.APP_ID)
+            currentWeatherViewModel.getDailyWeatherByCoordinates(address!!.latitude, address!!.longitude, URLs.APP_ID)
 
-        currentWeatherViewModel.getCurrentWeatherByCoordinates(Settings.DEFAULT_LAT, Settings.DEFAULT_LON, URLs.APP_ID)
-//        currentWeatherViewModel.getCurrentWeatherByCity("Saint-Petersburg", URLs.APP_ID)
-        currentWeatherViewModel.getDailyWeatherByCoordinates(Settings.DEFAULT_LAT, Settings.DEFAULT_LON, URLs.APP_ID)
+        }
+////        currentWeatherViewModel.getCurrentWeatherByCity("Saint-Petersburg", URLs.APP_ID)
+////        currentWeatherViewModel.getDailyWeatherByCoordinates(Settings.DEFAULT_LAT, Settings.DEFAULT_LON, URLs.APP_ID)
         callOpenWeatherMapApi()
     }
 
@@ -142,6 +133,13 @@ class CurrentWeatherFragment : Fragment() {
                             repeat = 0
                             progressBar.visibility = View.GONE
 
+                            if(address == null){
+                                binding.curCity.text = Settings.DEFAULT_CITY
+                            }
+                            else {
+                                binding.curCity.text = address?.locality.toString()
+                            }
+
                             binding.curTemperature.text = getString(R.string.temp_c, value.currentWeather.temp.toInt())
                             binding.feelsLike.text = getString(R.string.feels_like_temp_c, value.currentWeather.feels_like.toInt())
                             binding.curWeatherDescr.text = value.currentWeather.weather_descr.replaceFirstChar { it.uppercaseChar()}
@@ -170,6 +168,11 @@ class CurrentWeatherFragment : Fragment() {
 
     }
 
-
-
+    private fun requestPermissionLocation(){
+        ActivityCompat.requestPermissions(
+            requireActivity(), arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION),
+            100
+        )
+    }
 }
