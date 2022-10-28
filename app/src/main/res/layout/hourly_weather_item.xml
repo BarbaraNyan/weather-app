@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:padding="15dp">
+
+
+    <TextView
+        android:id="@+id/tvHourTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="19:00"
+        android:textSize="15dp" />
+
+    <TextView
+        android:id="@+id/tvHourTemp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="2°C"
+        android:textColor="@color/black"
+        android:textSize="20dp" />
+
+    <ImageView
+        android:id="@+id/ivHourIcon"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@drawable/cloud" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="15dp"
+            android:src="@drawable/humidity"
+            android:layout_gravity="center_vertical"/>
+        <TextView
+            android:id="@+id/tvHourHumidity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="50%"
+            android:textSize="15dp" />
+    </LinearLayout>
+
+
+</LinearLayout>
