@@ -10,6 +10,8 @@ import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.provider.Settings
+import android.util.Log
+import android.view.inputmethod.EditorInfo
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.app.ActivityCompat
@@ -17,9 +19,11 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.example.weather_app.databinding.ActivityMainBinding
 import com.example.weather_app.util.LocationTracker
+import com.example.weather_app.util.URLs
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.textfield.TextInputEditText
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,42 +37,56 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+//        binding.inputCityName.setOnEditorActionListener { view, i, keyEvent ->
+//            if(i == EditorInfo.IME_ACTION_DONE){
+//
+//            }
+//            false
+//        }
+        //!!!DELETE
+//            dataBind.inputFindCityWeather.setOnEditorActionListener { view, actionId, event ->
+//                if (actionId == EditorInfo.IME_ACTION_DONE) {
+//                    viewModel.fetchWeatherDetailFromDb((view as EditText).text.toString())
+//                    viewModel.fetchAllWeatherDetailsFromDb()
+//                }
+//                false
+//            }
 
 
         var navController = findNavController(R.id.fragHolder)
 //        setupActionBarWithNavController(findNavController(R.id.fragHolder))
 
-        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-            override fun onTabSelected(tab: TabLayout.Tab?) {
-                if (tab != null) {
-                    when(tab.position){
-                        0 -> {
-                            navController.popBackStack()
-                            navController.navigate(R.id.currentWeatherFragment)
-                        }
-                        1 -> {
-                            navController.popBackStack()
-                            navController.navigate(R.id.dailyWeatherFragment)
-                        }
-                        2 ->{
-                            navController.popBackStack()
-                        }
-                    }
-                }
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-            }
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-            }
-
-        })
+//        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+//            override fun onTabSelected(tab: TabLayout.Tab?) {
+//                if (tab != null) {
+//                    when(tab.position){
+//                        0 -> {
+//                            navController.popBackStack()
+//                            navController.navigate(R.id.currentWeatherFragment)
+//                        }
+//                        1 -> {
+//                            navController.popBackStack()
+//                            navController.navigate(R.id.dailyWeatherFragment)
+//                        }
+//                        2 ->{
+//                            navController.popBackStack()
+//                        }
+//                    }
+//                }
+//            }
+//
+//            override fun onTabUnselected(tab: TabLayout.Tab?) {
+//            }
+//
+//            override fun onTabReselected(tab: TabLayout.Tab?) {
+//            }
+//
+//        })
     }
 
 }

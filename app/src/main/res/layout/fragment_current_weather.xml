@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".fragments.CurrentWeatherFragment">
+    tools:context=".ui.fragment.CurrentWeatherFragment">
     <ProgressBar
         android:id="@+id/progressBar"
         android:layout_width="wrap_content"
@@ -14,24 +14,64 @@
         android:indeterminateTint="#673AB7"
         android:visibility="visible" />
 
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_margin="10dp">
-        <TextView
-            android:id="@+id/curCity"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <EditText
+                android:id="@+id/etSearchCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:hint="Input your city"/>
+            <ImageView
+                android:id="@+id/ivSearchCity"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:src="@drawable/ic_baseline_search_24"/>
+        </LinearLayout>
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Saint-Petersburg"
-            android:layout_gravity="center_horizontal"
-            android:textSize="36dp"/>
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:src="@drawable/geolocation_icon"
+                android:layout_gravity="center_vertical"
+                />
+            <TextView
+                android:id="@+id/curCity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Saint-Petersburg"
+                android:textSize="36dp"/>
+        </LinearLayout>
+
         <ImageView
             android:id="@+id/ivCurWeatherIcon"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:src="@drawable/cloud"
             android:layout_gravity="center_horizontal"/>
+
+        <TextView
+            android:id="@+id/curWeatherDescr"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Scattered clouds"
+            android:textSize="20dp" />
+
         <TextView
             android:id="@+id/curTemperature"
             android:layout_width="wrap_content"
@@ -40,7 +80,7 @@
             android:text="+2°C"
             android:textSize="52dp"
             android:textStyle="bold"
-            android:textColor="@color/black"/>
+            android:textColor="@color/white"/>
 <!--        <TextView-->
 <!--            android:id="@+id/curFeelsLike"-->
 <!--            android:layout_width="wrap_content"-->
@@ -48,15 +88,9 @@
 <!--            android:layout_gravity="center"-->
 <!--            android:text="Feels like 2"-->
 <!--            android:textSize="20dp"/>-->
-        <TextView
-            android:id="@+id/curWeatherDescr"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Scattered clouds"
-            android:textSize="20dp"/>
 
         <androidx.gridlayout.widget.GridLayout
+            android:id="@+id/gridLayoutCurWeather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/oval"
@@ -65,7 +99,8 @@
             app:orientation="horizontal"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="20sp"
-            android:layout_weight="0">
+            android:layout_weight="0"
+            android:visibility="gone">
 
             <LinearLayout
                 android:orientation="vertical"
@@ -74,10 +109,11 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/cloud"/>
+                    android:src="@drawable/wind_weather_icon"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="Wind"/>
                 <TextView
                     android:id="@+id/curWind"
@@ -96,6 +132,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="Humidity"/>
                 <TextView
                     android:id="@+id/curHumidity"
@@ -114,6 +151,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="Pressure"/>
                 <TextView
                     android:id="@+id/curPressure"
@@ -132,6 +170,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="Sunrise"/>
                 <TextView
                     android:id="@+id/curSunrise"
@@ -150,6 +189,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="Sunset"/>
                 <TextView
                     android:id="@+id/curSunset"
@@ -163,11 +203,12 @@
                 android:gravity="center">
                 <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/cloud"/>
+                    android:layout_height="25dp"
+                    android:src="@drawable/temperature_icon"/>
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:textColor="@color/black"
                     android:text="Feels like"/>
                 <TextView
                     android:id="@+id/feels_like"
@@ -177,19 +218,28 @@
             </LinearLayout>
         </androidx.gridlayout.widget.GridLayout>
 
+<!--        <Button-->
+<!--            android:id="@+id/bthWeeklyWeather"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center_horizontal"-->
+<!--            android:layout_marginTop="10dp"-->
+<!--            android:background="@drawable/oval"-->
+<!--            android:text="show weather for the week"/>-->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvHourWeather"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:paddingRight="5dp"
             android:paddingLeft="5dp"
+            android:paddingRight="5dp"
+            android:layout_marginTop="10dp"
             android:background="@drawable/oval"
-
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/chipGroup"
             tools:listitem="@layout/hourly_weather_item"
-            tools:visibility="visible" />
-
+            tools:visibility="gone" />
     </LinearLayout>
 
 

@@ -1,7 +1,7 @@
 package com.example.weather_app.domain.use_cases
 
 import com.example.weather_app.domain.model.CurrentWeather
-import com.example.weather_app.domain.repository.CurrentWeatherRepository
+import com.example.weather_app.domain.repository.WeatherRepository
 import com.example.weather_app.util.ResponseState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -10,7 +10,7 @@ import java.io.IOException
 import javax.inject.Inject
 
 class CurrentWeatherUseCase @Inject constructor(
-    private val repository: CurrentWeatherRepository
+    private val repository: WeatherRepository
 ) {
     operator fun invoke(q: String, api_key: String): Flow<ResponseState<CurrentWeather>> = flow {
         try {

@@ -1,19 +1,15 @@
-package com.example.weather_app.adapter
+package com.example.weather_app.ui.adapter
 
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.res.TypedArrayUtils.getString
-import androidx.fragment.app.findFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.weather_app.R
-import com.example.weather_app.databinding.FragmentCurrentWeatherBinding
 import com.example.weather_app.databinding.HourlyWeatherItemBinding
 import com.example.weather_app.domain.model.CurrentWeather
 
@@ -25,6 +21,7 @@ class HourlyWeatherAdapter(var hourlyWeatherList: ArrayList<CurrentWeather>): Re
 //            notifyDataSetChanged()
 //        }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setData(list: ArrayList<CurrentWeather>) {
         this.hourlyWeatherList = list
         notifyDataSetChanged()

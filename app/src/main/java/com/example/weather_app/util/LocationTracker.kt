@@ -55,9 +55,9 @@ class LocationTracker(context: Context) {
     }
     fun getLocation(): Address?{
 
-        var latitude = deviceLocation?.latitude ?: 0.0
-        var longitude = deviceLocation?.longitude ?: 0.0
-        var addressList = Geocoder(context.get(), Locale.ENGLISH).getFromLocation(latitude, longitude, 1)
+        val latitude = deviceLocation?.latitude ?: 0.0
+        val longitude = deviceLocation?.longitude ?: 0.0
+        val addressList = Geocoder(context.get(), Locale.ENGLISH).getFromLocation(latitude, longitude, 1)
         return if(addressList.isEmpty()) null else addressList[0]
     }
 

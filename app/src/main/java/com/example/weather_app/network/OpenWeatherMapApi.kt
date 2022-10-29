@@ -10,16 +10,16 @@ import retrofit2.http.Query
 interface OpenWeatherMapApi {
 
     @GET(URLs.CURRENT_WEATHER_URL)
-    suspend fun getWeatherByCoordinates(@Query("lat") lat: Double,
-                                        @Query("lon") lon: Double,
-                                        @Query("appid") api_key: String = URLs.APP_ID,
-                                        @Query("units") units: String = "metric"):
+    suspend fun getCurrentWeatherByCoordinates(@Query("lat") lat: Double,
+                                               @Query("lon") lon: Double,
+                                               @Query("appid") api_key: String = URLs.APP_ID,
+                                               @Query("units") units: String = "metric"):
             CurrentWeatherDTO
 
     @GET(URLs.CURRENT_WEATHER_URL)
-    suspend fun getWeatherByCity(@Query("q")q:String,
-                                 @Query("appid") api_key: String = URLs.APP_ID,
-                                 @Query("units") units: String = "metric"):
+    suspend fun getCurrentWeatherByCity(@Query("q")q:String,
+                                        @Query("appid") api_key: String = URLs.APP_ID,
+                                        @Query("units") units: String = "metric"):
             CurrentWeatherDTO
 
     @GET(URLs.DAILY_FORECAST_URL)
@@ -27,6 +27,12 @@ interface OpenWeatherMapApi {
                                              @Query("lon") lon: Double,
                                              @Query("appid") api_key: String = URLs.APP_ID,
                                              @Query("units") units: String = "metric"):
+            DailyWeatherDTO
+
+    @GET(URLs.DAILY_FORECAST_URL)
+    suspend fun getDailyWeatherByCity(@Query("q")q:String,
+                                      @Query("appid") api_key: String = URLs.APP_ID,
+                                      @Query("units") units: String = "metric"):
             DailyWeatherDTO
 
 }

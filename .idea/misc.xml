@@ -6,16 +6,22 @@
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable-v24/sunny_snowing-48px.xml" value="0.121" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/gradient.xml" value="0.1" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/humidity.xml" value="0.12" />
+        <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.139" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/oval.xml" value="0.1" />
+        <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/position_icon.xml" value="0.139" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/pressure.xml" value="0.121" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/sunrise.xml" value="0.121" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/sunset.xml" value="0.121" />
+        <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/temperature_icon.xml" value="0.139" />
+        <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/wind_weather_icon.xml" value="0.139" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/layout/activity_main.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/layout/activity_splash.xml" value="0.12239583333333333" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/layout/daily_weather_item.xml" value="0.1" />
-        <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/layout/fragment_current_weather.xml" value="0.17798913043478262" />
+        <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/layout/fragment_current_weather.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/layout/fragment_daily_weather.xml" value="0.1" />
+        <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/layout/fragment_weekly_weather.xml" value="0.1693840579710145" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/layout/hourly_weather_item.xml" value="0.4466666666666667" />
+        <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/layout/weekly_weather_item.xml" value="0.12773224043715847" />
       </map>
     </option>
   </component>

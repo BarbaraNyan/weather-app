@@ -12,7 +12,6 @@ data class CurrentWeather(
     val sunrise: String? = "",
     val sunset: String? = "",
     val dt_txt: String? = "",
-    val icon: String? = ""
-//    val sunrise: ZonedDateTime,
-//    val sunset: ZonedDateTime
+    val icon: String? = "",
+    val dayOfWeek: String? = ""
 )

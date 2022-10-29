@@ -1,8 +1,8 @@
 package com.example.weather_app.di
 
 import com.example.weather_app.network.OpenWeatherMapApi
-import com.example.weather_app.domain.repository.CurrentWeatherRepository
-import com.example.weather_app.domain.repository.CurrentWeatherRepositoryImpl
+import com.example.weather_app.domain.repository.WeatherRepository
+import com.example.weather_app.domain.repository.WeatherRepositoryImpl
 import com.example.weather_app.util.URLs
 import dagger.Module
 import dagger.Provides
@@ -15,7 +15,7 @@ import javax.inject.Singleton
 
 @Module
 @InstallIn(SingletonComponent::class)
-object CurrentWeatherModule {
+object WeatherModule {
 
     @Provides
     @Singleton
@@ -29,7 +29,7 @@ object CurrentWeatherModule {
 
     @Provides
     @Singleton
-    fun provideCurrentWeatherRepository(api: OpenWeatherMapApi):CurrentWeatherRepository{
-        return CurrentWeatherRepositoryImpl(api)
+    fun provideWeatherRepository(api: OpenWeatherMapApi):WeatherRepository{
+        return WeatherRepositoryImpl(api)
     }
 }

@@ -3,11 +3,12 @@ package com.example.weather_app.util
 import android.icu.text.SimpleDateFormat
 import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
+import java.util.*
 
 object TimeFormatter {
-    private val dayHourFormatter = DateTimeFormatter.ofPattern("HH:mm")
-    private val simpleDateFormat = SimpleDateFormat("HH:mm")
+    private val simpleDateFormatHour = SimpleDateFormat("HH:mm")
+    private val simpleDateFormatDayOfWeek = SimpleDateFormat("EEEE", Locale.ENGLISH)
 
-    fun toDayHour(time: ZonedDateTime): String = dayHourFormatter.format(time)
-    fun toString(time: Long): String = simpleDateFormat.format(time * 1000L)
+    fun toHour(time: Long): String = simpleDateFormatHour.format(time * 1000L)
+    fun toDayOfWeek(time: Long): String = simpleDateFormatDayOfWeek.format(time * 1000L)
 }
