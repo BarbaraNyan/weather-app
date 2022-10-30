@@ -27,12 +27,7 @@ class DailyWeatherUseCase@Inject constructor(
     operator fun invoke(lat: Double, lon: Double, api_key: String): Flow<ResponseState<List<CurrentWeather>>> = flow {
         try {
             emit(ResponseState.Loading())
-            val weather = repository.getDailyWeatherByCoordinates(lat, lon, api_key).
-//            map{
-//                it.toCurrentWeather()
-//            }
-            toDailyWeatherList()
-            //!!!!!!!!!! change
+            val weather = repository.getDailyWeatherByCoordinates(lat, lon, api_key).toDailyWeatherList()
             emit(ResponseState.Success(weather))
         } catch (e: HttpException) {
             emit(ResponseState.Error(e.localizedMessage ?: "An unexpected error occurred"))

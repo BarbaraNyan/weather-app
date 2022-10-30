@@ -15,22 +15,13 @@ import com.example.weather_app.domain.model.CurrentWeather
 
 class HourlyWeatherAdapter(var hourlyWeatherList: ArrayList<CurrentWeather>): RecyclerView.Adapter<HourlyWeatherAdapter.HourlyViewHolder>() {
 
-//    private var hourlyWeatherList = emptyList<CurrentWeather>()
-//        set(value) {
-//            field = value
-//            notifyDataSetChanged()
-//        }
+    class HourlyViewHolder(val binding: HourlyWeatherItemBinding):
+        RecyclerView.ViewHolder(binding.root)
 
     @SuppressLint("NotifyDataSetChanged")
     fun setData(list: ArrayList<CurrentWeather>) {
         this.hourlyWeatherList = list
         notifyDataSetChanged()
-    }
-
-
-    class HourlyViewHolder(val binding: HourlyWeatherItemBinding):
-        RecyclerView.ViewHolder(binding.root) {
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): HourlyViewHolder {
@@ -54,13 +45,6 @@ class HourlyWeatherAdapter(var hourlyWeatherList: ArrayList<CurrentWeather>): Re
                 override fun onLoadCleared(placeholder: Drawable?) {
                 }
             })
-
-//        with(holder.binding){
-//            tvHourTemp.text = getString(R.string.temp_c, curItem.temp.toInt())
-//            tvHourHumidity.text = curItem.humidity.toString()
-//            tvHourTime.text = ""
-//        }
-
     }
 
     override fun getItemCount(): Int {

@@ -11,8 +11,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
 
-        android:indeterminateTint="#673AB7"
+        android:indeterminateTint="#568BDA"
         android:visibility="visible" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
 
 
     <LinearLayout
@@ -44,16 +50,16 @@
             android:orientation="horizontal"
             android:layout_gravity="center_horizontal">
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:src="@drawable/geolocation_icon"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/location_icon"
                 android:layout_gravity="center_vertical"
                 />
             <TextView
                 android:id="@+id/curCity"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Saint-Petersburg"
+                android:text="Sankt-Peterburg"
                 android:textSize="36dp"/>
         </LinearLayout>
 
@@ -61,7 +67,6 @@
             android:id="@+id/ivCurWeatherIcon"
             android:layout_width="70dp"
             android:layout_height="70dp"
-            android:src="@drawable/cloud"
             android:layout_gravity="center_horizontal"/>
 
         <TextView
@@ -69,7 +74,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Scattered clouds"
             android:textSize="20dp" />
 
         <TextView
@@ -77,7 +81,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="+2°C"
             android:textSize="52dp"
             android:textStyle="bold"
             android:textColor="@color/white"/>
@@ -242,7 +245,16 @@
             tools:visibility="gone" />
     </LinearLayout>
 
+    </ScrollView>
 
-
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabCurrentLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="30dp"
+        android:src="@drawable/geoposition_icon"
+        app:backgroundTint="#758DE6" />
 
 </FrameLayout>

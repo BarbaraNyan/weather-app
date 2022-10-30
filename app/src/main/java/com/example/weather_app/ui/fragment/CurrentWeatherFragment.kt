@@ -7,6 +7,7 @@ import android.location.Address
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnLayoutChangeListener
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -18,13 +19,13 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.weather_app.R
-import com.example.weather_app.ui.adapter.HourlyWeatherAdapter
 import com.example.weather_app.databinding.FragmentCurrentWeatherBinding
 import com.example.weather_app.domain.model.CurrentWeather
+import com.example.weather_app.ui.adapter.HourlyWeatherAdapter
+import com.example.weather_app.ui.view_model.WeatherViewModel
 import com.example.weather_app.util.LocationTracker
 import com.example.weather_app.util.Settings
 import com.example.weather_app.util.URLs
-import com.example.weather_app.ui.view_model.WeatherViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -35,16 +36,16 @@ import kotlinx.coroutines.launch
 class CurrentWeatherFragment : Fragment(){
     private lateinit var binding: FragmentCurrentWeatherBinding
     private val weatherViewModel: WeatherViewModel by viewModels()
-    private var searchCityName: String = ""
+
     private lateinit var adapter: HourlyWeatherAdapter
-    private val hourlyWeatherList = arrayListOf<CurrentWeather>()
+    private var hourlyWeatherList = arrayListOf<CurrentWeather>()
 
     private lateinit var locationTracker: LocationTracker
+    private var address: Address? = null
 
     private var repeatDailyWeatherRequest = 3
     private var repeatCurrentWeatherRequest = 3
-
-    private var address: Address? = null
+    private var searchCityName: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,10 +66,15 @@ class CurrentWeatherFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        //set rv for hourly weather
         adapter = HourlyWeatherAdapter(ArrayList())
         val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHourWeather.layoutManager = layoutManager
         binding.rvHourWeather.adapter = adapter
+
+        binding.fabCurrentLocation.setOnClickListener { _ ->
+            setWeatherByDefaultCityOrCurrentLocation()
+        }
 
         setWeatherByDefaultCityOrCurrentLocation()
         searchCityListener()
@@ -113,6 +119,8 @@ class CurrentWeatherFragment : Fragment(){
 
             if(binding.etSearchCity.text.isNotEmpty()){
                 searchCityName = binding.etSearchCity.text.toString()
+                binding.etSearchCity.text.clear()
+                binding.etSearchCity.clearFocus()
                 weatherViewModel.getCurrentWeatherByCity(searchCityName.toLowerCase(), URLs.APP_ID)
                 weatherViewModel.getDailyWeatherByCity(searchCityName.toLowerCase(), URLs.APP_ID)
                 callOpenWeatherMapApi()
@@ -129,15 +137,15 @@ class CurrentWeatherFragment : Fragment(){
                 weatherViewModel._dailyWeatherValue.collect { value ->
                     when {
                         value.isLoading -> {
-                            progressBar.visibility = View.VISIBLE
+//                            progressBar.visibility = View.VISIBLE
                         }
                         value.error.isNotBlank() -> {
-                            progressBar.visibility = View.GONE
+//                            progressBar.visibility = View.GONE
                             repeatDailyWeatherRequest = 0
                         }
                         value.dailyWeather.isNotEmpty() -> {
                             repeatDailyWeatherRequest = 0
-                            progressBar.visibility = View.GONE
+//                            progressBar.visibility = View.GONE
 
                             setDailyWeatherFields(value.dailyWeather)
                         }
@@ -157,12 +165,14 @@ class CurrentWeatherFragment : Fragment(){
                             progressBar.visibility = View.GONE
                             repeatCurrentWeatherRequest = 0
                             Toast.makeText(requireContext(), "City not found, try again", Toast.LENGTH_SHORT).show()
+                            searchCityName = ""
                         }
                         value.currentWeather!=null-> {
                             repeatCurrentWeatherRequest = 0
                             progressBar.visibility = View.GONE
 
                             setCurrentWeatherFields(value.currentWeather)
+                            searchCityName = ""
                         }
                     }
                     delay(1000)
@@ -187,14 +197,16 @@ class CurrentWeatherFragment : Fragment(){
 //
 //        }
 
-        hourlyWeatherList.addAll(dailyWeatherList)
+        hourlyWeatherList = dailyWeatherList as ArrayList<CurrentWeather>
+//        hourlyWeatherList.addAll(dailyWeatherList)
         adapter.setData(hourlyWeatherList)
     }
 
     private fun setCurrentWeatherFields(curWeather: CurrentWeather) {
         binding.gridLayoutCurWeather.visibility = View.VISIBLE
         if(searchCityName!=""){
-            binding.curCity.text = binding.etSearchCity.text.toString().capitalize()
+            binding.curCity.text = searchCityName.capitalize()
+//            binding.etSearchCity.text.clear()
         }
         else if(address == null){
             binding.curCity.text = Settings.DEFAULT_CITY
@@ -212,7 +224,6 @@ class CurrentWeatherFragment : Fragment(){
         binding.curSunrise.text = curWeather.sunrise
         binding.curSunset.text = curWeather.sunset
 
-        //fragment not load?
         if(!isAdded) return
         Glide.with(this@CurrentWeatherFragment)
             .asBitmap()

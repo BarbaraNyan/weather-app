@@ -4,7 +4,6 @@ import com.example.weather_app.domain.model.CurrentWeather
 import com.example.weather_app.util.TimeFormatter
 
 class DailyWeatherDTO(
-//    val list: List<list>
     val list: List<CurrentWeatherDTO>
 ){
     fun toDailyWeatherList(): ArrayList<CurrentWeather> {

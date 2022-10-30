@@ -1,7 +1,5 @@
 package com.example.weather_app.domain.model
 
-import java.time.ZonedDateTime
-
 data class CurrentWeather(
     val temp: Double,
     val feels_like: Double,

@@ -4,8 +4,13 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable-v24/sunny_snowing-48px.xml" value="0.121" />
+        <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/geolocation_icon.xml" value="0.1" />
+        <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/gps_location_maps_navigation_pin_icon.xml" value="0.125" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/gradient.xml" value="0.1" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/humidity.xml" value="0.12" />
+        <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/ic__11766_location_icon.xml" value="0.125" />
+        <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/ic__216353_location_locator_map_marker_pin_icon.xml" value="0.125" />
+        <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/ic__52557_location_my_icon.xml" value="0.139" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.139" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/oval.xml" value="0.1" />
         <entry key="..\:/Users/Barbara/AndroidStudioProjects/weatherapp/app/src/main/res/drawable/position_icon.xml" value="0.139" />

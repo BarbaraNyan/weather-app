@@ -37,57 +37,12 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        binding.inputCityName.setOnEditorActionListener { view, i, keyEvent ->
-//            if(i == EditorInfo.IME_ACTION_DONE){
-//
-//            }
-//            false
-//        }
-        //!!!DELETE
-//            dataBind.inputFindCityWeather.setOnEditorActionListener { view, actionId, event ->
-//                if (actionId == EditorInfo.IME_ACTION_DONE) {
-//                    viewModel.fetchWeatherDetailFromDb((view as EditText).text.toString())
-//                    viewModel.fetchAllWeatherDetailsFromDb()
-//                }
-//                false
-//            }
-
-
+        //if it will be multiple fragments
         var navController = findNavController(R.id.fragHolder)
 //        setupActionBarWithNavController(findNavController(R.id.fragHolder))
-
-//        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
-//            override fun onTabSelected(tab: TabLayout.Tab?) {
-//                if (tab != null) {
-//                    when(tab.position){
-//                        0 -> {
-//                            navController.popBackStack()
-//                            navController.navigate(R.id.currentWeatherFragment)
-//                        }
-//                        1 -> {
-//                            navController.popBackStack()
-//                            navController.navigate(R.id.dailyWeatherFragment)
-//                        }
-//                        2 ->{
-//                            navController.popBackStack()
-//                        }
-//                    }
-//                }
-//            }
-//
-//            override fun onTabUnselected(tab: TabLayout.Tab?) {
-//            }
-//
-//            override fun onTabReselected(tab: TabLayout.Tab?) {
-//            }
-//
-//        })
     }
-
 }
 

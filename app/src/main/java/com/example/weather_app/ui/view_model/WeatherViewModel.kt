@@ -22,7 +22,6 @@ class WeatherViewModel @Inject constructor(
     private val curWeatherValue = MutableStateFlow(CurrentWeatherState())
     var _curWeatherValue: StateFlow<CurrentWeatherState> = curWeatherValue
 
-    //!!!!!!!!!!change
     private val dailyWeatherValue = MutableStateFlow(DailyWeatherState())
     var _dailyWeatherValue: StateFlow<DailyWeatherState> = dailyWeatherValue
 
