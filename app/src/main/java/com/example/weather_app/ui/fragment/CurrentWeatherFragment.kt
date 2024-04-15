@@ -7,7 +7,6 @@ import android.location.Address
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.OnLayoutChangeListener
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
@@ -33,7 +32,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class CurrentWeatherFragment : Fragment(){
+class CurrentWeatherFragment : Fragment() {
     private lateinit var binding: FragmentCurrentWeatherBinding
     private val weatherViewModel: WeatherViewModel by viewModels()
 
@@ -58,7 +57,7 @@ class CurrentWeatherFragment : Fragment(){
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = FragmentCurrentWeatherBinding.inflate(layoutInflater)
         return binding.root
     }
@@ -66,47 +65,58 @@ class CurrentWeatherFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        //set rv for hourly weather
         adapter = HourlyWeatherAdapter(ArrayList())
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         binding.rvHourWeather.layoutManager = layoutManager
         binding.rvHourWeather.adapter = adapter
 
         binding.fabCurrentLocation.setOnClickListener { _ ->
             setWeatherByDefaultCityOrCurrentLocation()
         }
+//        binding.btnWeeklyWeather.setOnClickListener {
+//            val bundle = bundleOf("weatherList" to hourlyWeatherList)
+//            findNavController().navigate(
+//                R.id.action_currentWeatherFragment_to_weeklyWeatherFragment,
+//                bundle
+//            )
+//        }
 
-        setWeatherByDefaultCityOrCurrentLocation()
         searchCityListener()
-
-//        Toast.makeText(requireContext(),address.latitude.toString() + " " + curLong.toString(), Toast.LENGTH_SHORT).show()
+        setWeatherByDefaultCityOrCurrentLocation()
 
     }
 
     private fun setWeatherByDefaultCityOrCurrentLocation() {
         if (address == null) {
-            weatherViewModel.getCurrentWeatherByCoordinates(
-                Settings.DEFAULT_LAT,
-                Settings.DEFAULT_LON,
-                URLs.APP_ID
-            )
-            weatherViewModel.getDailyWeatherByCoordinates(
-                Settings.DEFAULT_LAT,
-                Settings.DEFAULT_LON,
-                URLs.APP_ID
-            )
+            if (searchCityName == "") {
+                weatherViewModel.getCurrentWeatherByCoordinates(
+                    Settings.DEFAULT_LAT,
+                    Settings.DEFAULT_LON,
+                    URLs.APP_ID
+                )
+                weatherViewModel.getDailyWeatherByCoordinates(
+                    Settings.DEFAULT_LAT,
+                    Settings.DEFAULT_LON,
+                    URLs.APP_ID
+                )
+            } else {
+                weatherViewModel.getCurrentWeatherByCity(searchCityName.lowercase(), URLs.APP_ID)
+                weatherViewModel.getDailyWeatherByCity(searchCityName.lowercase(), URLs.APP_ID)
+            }
         } else {
-            weatherViewModel.getCurrentWeatherByCoordinates(
-                address!!.latitude,
-                address!!.longitude,
+            address?.let{ it ->
+                weatherViewModel.getCurrentWeatherByCoordinates(
+                it.latitude,
+                it.longitude,
                 URLs.APP_ID
             )
             weatherViewModel.getDailyWeatherByCoordinates(
-                address!!.latitude,
-                address!!.longitude,
+                it.latitude,
+                it.longitude,
                 URLs.APP_ID
             )
-
+        }
         }
         callOpenWeatherMapApi()
     }
@@ -114,27 +124,25 @@ class CurrentWeatherFragment : Fragment(){
     private fun searchCityListener() {
         binding.ivSearchCity.setOnClickListener { view ->
             //Hide keyboard
-            val inputMethod = view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
+            val inputMethod =
+                view.context.getSystemService(Activity.INPUT_METHOD_SERVICE) as InputMethodManager
             inputMethod.hideSoftInputFromWindow(view.windowToken, 0)
 
-            if(binding.etSearchCity.text.isNotEmpty()){
+            if (binding.etSearchCity.text.isNotEmpty()) {
                 searchCityName = binding.etSearchCity.text.toString()
                 binding.etSearchCity.text.clear()
                 binding.etSearchCity.clearFocus()
-                weatherViewModel.getCurrentWeatherByCity(searchCityName.toLowerCase(), URLs.APP_ID)
-                weatherViewModel.getDailyWeatherByCity(searchCityName.toLowerCase(), URLs.APP_ID)
-                callOpenWeatherMapApi()
             }
         }
     }
 
-    private fun callOpenWeatherMapApi(){
+    private fun callOpenWeatherMapApi() {
         val progressBar = binding.progressBar
 
         CoroutineScope(Dispatchers.Main).launch {
 
             repeat(repeatDailyWeatherRequest) {
-                weatherViewModel._dailyWeatherValue.collect { value ->
+                weatherViewModel.dailyWeatherValue.collect { value ->
                     when {
                         value.isLoading -> {
 //                            progressBar.visibility = View.VISIBLE
@@ -155,8 +163,8 @@ class CurrentWeatherFragment : Fragment(){
             }
         }
         CoroutineScope(Dispatchers.Main).launch {
-            repeat(repeatCurrentWeatherRequest){
-                weatherViewModel._curWeatherValue.collect{ value->
+            repeat(repeatCurrentWeatherRequest) {
+                weatherViewModel.curWeatherValue.collect { value ->
                     when {
                         value.isLoading -> {
                             progressBar.visibility = View.VISIBLE
@@ -164,14 +172,19 @@ class CurrentWeatherFragment : Fragment(){
                         value.error.isNotBlank() -> {
                             progressBar.visibility = View.GONE
                             repeatCurrentWeatherRequest = 0
-                            Toast.makeText(requireContext(), "City not found, try again", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "City not found, try again",
+                                Toast.LENGTH_SHORT
+                            ).show()
                             searchCityName = ""
                         }
-                        value.currentWeather!=null-> {
+                        value.currentWeather != null -> {
                             repeatCurrentWeatherRequest = 0
                             progressBar.visibility = View.GONE
 
                             setCurrentWeatherFields(value.currentWeather)
+
                             searchCityName = ""
                         }
                     }
@@ -185,63 +198,57 @@ class CurrentWeatherFragment : Fragment(){
     private fun setDailyWeatherFields(dailyWeatherList: List<CurrentWeather>) {
         binding.rvHourWeather.visibility = View.VISIBLE
 
-//        binding.rvHourWeather.addOnLayoutChangeListener {
-//                view, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom ->
-//                    if(bottom < oldBottom){
-//                        binding.rvHourWeather.post {
-//                            binding.rvHourWeather.smoothScrollToPosition(
-//                                (binding.rvHourWeather.adapter?.itemCount?: -1)
-//                            )
-//                        }
-//                    }
-//
-//        }
-
         hourlyWeatherList = dailyWeatherList as ArrayList<CurrentWeather>
-//        hourlyWeatherList.addAll(dailyWeatherList)
         adapter.setData(hourlyWeatherList)
     }
 
     private fun setCurrentWeatherFields(curWeather: CurrentWeather) {
         binding.gridLayoutCurWeather.visibility = View.VISIBLE
-        if(searchCityName!=""){
+        if (searchCityName != "") {
             binding.curCity.text = searchCityName.capitalize()
-//            binding.etSearchCity.text.clear()
-        }
-        else if(address == null){
+        } else if (address == null) {
             binding.curCity.text = Settings.DEFAULT_CITY
-        }
-        else {
+        } else {
             binding.curCity.text = address?.locality.toString()
         }
 
-        binding.curTemperature.text = getString(R.string.temp_c, curWeather.temp.toInt())
-        binding.feelsLike.text = getString(R.string.feels_like_temp_c, curWeather.feels_like.toInt())
-        binding.curWeatherDescr.text = curWeather.weather_descr.replaceFirstChar { it.uppercaseChar()}
-        binding.curWind.text = getString(R.string.wind_speed, String.format("%.2f", curWeather.wind))
+        binding.curTemperature.text = getString(R.string.temp_c, curWeather.temperature.toInt())
+        binding.feelsLike.text =
+            getString(R.string.feels_like_temp_c, curWeather.feelsLike.toInt())
+        binding.curWeatherDescr.text =
+            curWeather.description.replaceFirstChar { it.uppercaseChar() }
+        binding.curWind.text =
+            getString(R.string.wind_speed, String.format("%.2f", curWeather.wind))
         binding.curHumidity.text = getString(R.string.humidity, curWeather.humidity)
         binding.curPressure.text = getString(R.string.pressure, curWeather.pressure)
         binding.curSunrise.text = curWeather.sunrise
         binding.curSunset.text = curWeather.sunset
 
-        if(!isAdded) return
+        if (!isAdded) return
         Glide.with(this@CurrentWeatherFragment)
             .asBitmap()
             .load("https://openweathermap.org/img/wn/${curWeather.icon}@2x.png")
-            .into(object : CustomTarget<Bitmap>(){
+            .into(object : CustomTarget<Bitmap>() {
                 override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                     binding.ivCurWeatherIcon.setImageBitmap(resource)
                 }
+
                 override fun onLoadCleared(placeholder: Drawable?) {
                 }
             })
     }
 
-    private fun requestPermissionLocation(){
+    private fun requestPermissionLocation() {
         ActivityCompat.requestPermissions(
-            requireActivity(), arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION,
-                android.Manifest.permission.ACCESS_COARSE_LOCATION),
+            requireActivity(), arrayOf(
+                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                android.Manifest.permission.ACCESS_COARSE_LOCATION
+            ),
             100
         )
+    }
+
+    private companion object {
+
     }
 }

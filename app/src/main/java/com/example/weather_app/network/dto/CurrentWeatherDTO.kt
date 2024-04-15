@@ -3,19 +3,25 @@ package com.example.weather_app.network.dto
 import com.example.weather_app.domain.model.CurrentWeather
 import com.example.weather_app.util.TimeFormatter
 
+/**
+ * DTO текущей погоды
+ * @param weather погода
+ * @param main общие характеристики погоды
+ * @param wind скорость ветра
+ * @param sys описание рассвета и заката
+ */
 class CurrentWeatherDTO(
-//    val id: Int,
     val dt: Long,
-    val weather: List<weather>,
-    val main: main,
-    val wind: wind,
-    val sys: sys,
-    val dt_txt: String
-){
+    val weather: List<Weather>,
+    val main: MainCharacteristics,
+    val wind: Wind,
+    val sys: Sys,
+) {
     fun toCurrentWeather(): CurrentWeather {
-        return CurrentWeather(temp = main.temp,
-            feels_like = main.feels_like,
-            weather_descr = weather[0].description,
+        return CurrentWeather(
+            temperature = main.temperature,
+            feelsLike = main.feelsLike,
+            description = weather[0].description,
             wind = wind.speed,
             humidity = main.humidity,
             pressure = main.pressure,

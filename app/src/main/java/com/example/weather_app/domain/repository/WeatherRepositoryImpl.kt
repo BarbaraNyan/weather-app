@@ -5,10 +5,18 @@ import com.example.weather_app.network.dto.CurrentWeatherDTO
 import com.example.weather_app.network.dto.DailyWeatherDTO
 import javax.inject.Inject
 
+/**
+ * Реализация репозитория [WeatherRepository]
+ * @param openWeatherMapApi апи для получения погоды
+ */
 class WeatherRepositoryImpl @Inject constructor(
     private val openWeatherMapApi: OpenWeatherMapApi
-): WeatherRepository {
-    override suspend fun getCurrentWeather(lat: Double, lon: Double, api_key: String): CurrentWeatherDTO {
+) : WeatherRepository {
+    override suspend fun getCurrentWeather(
+        lat: Double,
+        lon: Double,
+        api_key: String
+    ): CurrentWeatherDTO {
         return openWeatherMapApi.getCurrentWeatherByCoordinates(lat, lon, api_key)
     }
 

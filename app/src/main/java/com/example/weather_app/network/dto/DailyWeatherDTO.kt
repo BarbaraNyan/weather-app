@@ -3,16 +3,21 @@ package com.example.weather_app.network.dto
 import com.example.weather_app.domain.model.CurrentWeather
 import com.example.weather_app.util.TimeFormatter
 
+/**
+ * DTO для описания погоды по дням
+ * @param list список с текущей погодой
+ */
 class DailyWeatherDTO(
-    val list: List<CurrentWeatherDTO>
-){
-    fun toDailyWeatherList(): ArrayList<CurrentWeather> {
-        val dailyWeatherList = ArrayList<CurrentWeather>()
-        for (item in list){
+    private val list: List<CurrentWeatherDTO>
+) {
+    fun toDailyWeatherList(): List<CurrentWeather> {
+        val dailyWeatherList = mutableListOf<CurrentWeather>()
+        list.forEach { item ->
             dailyWeatherList.add(
-                CurrentWeather(temp = item.main.temp,
-                    feels_like = item.main.feels_like,
-                    weather_descr = item.weather[0].description,
+                CurrentWeather(
+                    temperature = item.main.temperature,
+                    feelsLike = item.main.feelsLike,
+                    description = item.weather[0].description,
                     wind = item.wind.speed,
                     humidity = item.main.humidity,
                     pressure = item.main.pressure,

@@ -12,11 +12,11 @@ import com.google.android.gms.location.LocationServices
 import java.lang.ref.WeakReference
 import java.util.*
 
-
 class LocationTracker(context: Context) {
     private var deviceLocation: Location? = null
     private val context: WeakReference<Context>
     private var locationManager: LocationManager? = null
+
     init {
         this.context = WeakReference(context)
         initializeLocationProviders()
@@ -31,12 +31,20 @@ class LocationTracker(context: Context) {
             val isGPSEnabled = isProviderEnabled(LocationManager.GPS_PROVIDER)
             val isNetworkEnabled = isProviderEnabled(LocationManager.PASSIVE_PROVIDER)
 
-            if (ActivityCompat.checkSelfPermission(context.get()!!, Manifest.permission.ACCESS_FINE_LOCATION)
+            if (ActivityCompat.checkSelfPermission(
+                    context.get()!!,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
                 == PackageManager.PERMISSION_GRANTED &&
-                ActivityCompat.checkSelfPermission(context.get()!!, Manifest.permission.ACCESS_COARSE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.checkSelfPermission(
+                    context.get()!!,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                )
+                == PackageManager.PERMISSION_GRANTED
+            ) {
                 if (isGPSEnabled) {
-                    var usedLocationClient = LocationServices.getFusedLocationProviderClient(context.get()!!)
+                    var usedLocationClient =
+                        LocationServices.getFusedLocationProviderClient(context.get()!!)
                     usedLocationClient.lastLocation
                         .addOnSuccessListener { location ->
                             if (location != null) {
@@ -44,21 +52,21 @@ class LocationTracker(context: Context) {
                                 deviceLocation?.longitude = location.longitude
                             }
                         }
-//                    deviceLocation = locationManager!!.getLastKnownLocation(LocationManager.GPS_PROVIDER)
                 }
-                if(null==deviceLocation && isNetworkEnabled) {
-                        deviceLocation =
-                            locationManager!!.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
+                if (null == deviceLocation && isNetworkEnabled) {
+                    deviceLocation =
+                        locationManager!!.getLastKnownLocation(LocationManager.NETWORK_PROVIDER)
                 }
             }
         }
     }
-    fun getLocation(): Address?{
 
+    fun getLocation(): Address? {
         val latitude = deviceLocation?.latitude ?: 0.0
         val longitude = deviceLocation?.longitude ?: 0.0
-        val addressList = Geocoder(context.get(), Locale.ENGLISH).getFromLocation(latitude, longitude, 1)
-        return if(addressList.isEmpty()) null else addressList[0]
+        val addressList =
+            Geocoder(context.get(), Locale.ENGLISH).getFromLocation(latitude, longitude, 1)
+        return if (addressList.isEmpty()) null else addressList[0]
     }
 
 }
